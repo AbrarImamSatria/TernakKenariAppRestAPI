@@ -5,16 +5,18 @@ class AnakRequestModel {
     final DateTime? tanggalLahir;
     final String? jenisKelamin;
     final String? jenisKenari;
-    final String? keterangan;
-    final String? gambarInduk;
+    final String? gambarAnak;
+    final int? ayahId;
+    final int? ibuId;
 
     AnakRequestModel({
         this.noRing,
         this.tanggalLahir,
         this.jenisKelamin,
         this.jenisKenari,
-        this.keterangan,
-        this.gambarInduk,
+        this.gambarAnak,
+        this.ayahId,
+        this.ibuId,
     });
 
     factory AnakRequestModel.fromJson(String str) => AnakRequestModel.fromMap(json.decode(str));
@@ -26,8 +28,9 @@ class AnakRequestModel {
         tanggalLahir: json["tanggal_lahir"] == null ? null : DateTime.parse(json["tanggal_lahir"]),
         jenisKelamin: json["jenis_kelamin"],
         jenisKenari: json["jenis_kenari"],
-        keterangan: json["keterangan"],
-        gambarInduk: json["gambar_induk"],
+        gambarAnak: json["gambar_anak"],
+        ayahId: json["ayah_id"],
+        ibuId: json["ibu_id"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -35,7 +38,8 @@ class AnakRequestModel {
         "tanggal_lahir": "${tanggalLahir!.year.toString().padLeft(4, '0')}-${tanggalLahir!.month.toString().padLeft(2, '0')}-${tanggalLahir!.day.toString().padLeft(2, '0')}",
         "jenis_kelamin": jenisKelamin,
         "jenis_kenari": jenisKenari,
-        "keterangan": keterangan,
-        "gambar_induk": gambarInduk,
+        "gambar_anak": gambarAnak,
+        "ayah_id": ayahId,
+        "ibu_id": ibuId,
     };
 }
