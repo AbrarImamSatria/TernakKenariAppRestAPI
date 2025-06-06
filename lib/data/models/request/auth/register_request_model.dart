@@ -12,7 +12,7 @@ class RegisterRequestModel {
         this.email,
         this.password,
         this.passwordConfirmation,
-        this.roleId,
+        this.roleId = 2,
     });
 
     factory RegisterRequestModel.fromJson(String str) => RegisterRequestModel.fromMap(json.decode(str));
