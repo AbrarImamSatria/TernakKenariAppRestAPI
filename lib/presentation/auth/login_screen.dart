@@ -4,8 +4,9 @@ import 'package:canary_app/core/constants/colors.dart';
 import 'package:canary_app/core/core.dart';
 import 'package:canary_app/data/models/request/auth/login_request_model.dart';
 import 'package:canary_app/presentation/auth/bloc/login/login_bloc.dart';
-import 'package:canary_app/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:canary_app/presentation/auth/register_screen.dart';
+import 'package:canary_app/presentation/buyer/profile/buyer_profile_screen.dart';
+import 'package:canary_app/presentation/buyer/profile/widget/profile_buyer_form.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,9 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SpaceHeight(30),
                 CustomTextField(
-                  validator: 'Email tidak boleh kosong',
                   controller: emailController,
                   label: 'Email',
+                  validator: 'Email tidak boleh kosong',
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(Icons.email),
@@ -70,24 +71,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SpaceHeight(25),
                 CustomTextField(
-                  validator: 'Password tidak boleh kosong',
                   controller: passwordController,
                   label: 'Password',
+                  validator: 'Password tidak boleh kosong',
                   obscureText: !isShowPassword,
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(Icons.lock),
                   ),
                   suffixIcon: IconButton(
+                    icon: Icon(
+                      isShowPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
                     onPressed: () {
                       setState(() {
                         isShowPassword = !isShowPassword;
                       });
                     },
-                    icon: Icon(
-                      isShowPassword ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.grey,
-                    ),
                   ),
                 ),
                 const SpaceHeight(30),
@@ -100,23 +100,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     } else if (state is LoginSuccess) {
                       final role = state.responseModel.user?.role
                           ?.toLowerCase();
-
                       if (role == 'admin') {
-                        context.pushAndRemoveUntil(
-                          AdminConfirmScreen(),
-                          (route) => false,
-                        );
+                        // context.pushAndRemoveUntil(
+                        //   const AdminConfirmScreen(),
+                        //   (route) => false,
+                        // );
                       } else if (role == 'buyer') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.responseModel.message!)),
                         );
                         context.pushAndRemoveUntil(
-                          BuyerProfileScreen(),
+                          const BuyerProfileScreen(),
                           (route) => false,
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Role tidak dikenali')),
+                          SnackBar(content: Text('Role tidak dikenali')),
                         );
                       }
                     }
@@ -140,10 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                 ),
+
                 const SpaceHeight(20),
                 Text.rich(
                   TextSpan(
-                    text: 'Belum memiliki akun? Silahkan ',
+                    text: 'Belum punya akun? ',
                     style: TextStyle(
                       color: AppColors.grey,
                       fontSize: MediaQuery.of(context).size.width * 0.03,
