@@ -1,5 +1,6 @@
 import 'package:canary_app/presentation/buyer/profile/bloc/profile_buyer_bloc.dart';
 import 'package:canary_app/presentation/buyer/profile/widget/Profile_view_buyer.dart';
+import 'package:canary_app/presentation/buyer/profile/widget/profile_buyer_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,30 +22,25 @@ class _BuyerProfileScreenState extends State<BuyerProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profil Pembeli")),
+      appBar: AppBar(title: Text("Profil Pembeli")),
       body: BlocListener<ProfileBuyerBloc, ProfileBuyerState>(
         listener: (context, state) {
-          if (state is ProfileBuyerError || state is ProfileBuyerAddError) {
-            // Tampilkan pesan kesalahan dari state
-            final message = state is ProfileBuyerError
-                ? state.message
-                : (state as ProfileBuyerAddError).message;
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message)),
-            );
-
-            // Ambil ulang data profil
+          if (state is ProfileBuyerAdded) {
+            // Ambil profil setelah tambah
             context.read<ProfileBuyerBloc>().add(GetProfileBuyerEvent());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Profil berhasil ditambahkan")),
+            );
           }
         },
         child: BlocBuilder<ProfileBuyerBloc, ProfileBuyerState>(
           builder: (context, state) {
             if (state is ProfileBuyerLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator());
             }
 
-            if (state is ProfileBuyerLoaded && state.profile.data != null) {
+            if (state is ProfileBuyerLoaded &&
+                state.profile.data.name.isNotEmpty) {
               final profile = state.profile.data;
               return ProfileViewBuyer(profile: profile);
             }
